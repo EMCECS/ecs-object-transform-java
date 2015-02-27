@@ -19,12 +19,12 @@ dependencies {
 }
 
 cobertura {
-    coverageExcludes = ['com.emc.vipr.transform.encryption.DoesNotNeedRekeyException',
-                        'com.emc.vipr.transform.encryption.AESBench',
-                        'com.emc.vipr.transform.encryption.AESTest.*',
-                        'com.emc.vipr.transform.util.LzmaTest',
-                        'com.emc.vipr.transform.TransformConstants',
-                        'com.emc.vipr.transform.compression.CompressionStream',
-                        'com.emc.vipr.transform.util.CloseCallback']
+    coverageExcludes = ['com.emc.codec.encryption.DoesNotNeedRekeyException',
+                        'com.emc.codec.encryption.AESBench',
+                        'com.emc.codec.encryption.AESTest.*',
+                        'com.emc.codec.util.LzmaTest',
+                        'com.emc.codec.TransformConstants',
+                        'com.emc.codec.compression.CompressionStream',
+                        'com.emc.codec.util.CloseCallback']
 }
 
