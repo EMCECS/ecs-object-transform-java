@@ -28,36 +28,35 @@
 
 package com.emc.codec.encryption;
 
-import com.emc.codec.EncodeOutputStream;
-import com.emc.codec.util.CountingOutputStream;
+import com.emc.codec.EncodeInputStream;
+import com.emc.codec.util.CountingInputStream;
 
 import javax.crypto.Cipher;
-import javax.crypto.CipherOutputStream;
+import javax.crypto.CipherInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.security.DigestOutputStream;
+import java.io.InputStream;
+import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class EncryptionOutputStream extends EncodeOutputStream<EncryptionMetadata> {
+public class EncryptionInputStream extends EncodeInputStream<EncryptionMetadata> {
     private EncryptionMetadata metadata;
     boolean closed = false;
-    private DigestOutputStream digestStream;
-    private CountingOutputStream counterStream;
+    private DigestInputStream digestStream;
+    private CountingInputStream counterStream;
 
-    public EncryptionOutputStream(OutputStream originalStream, String encodeSpec, Cipher cipher, String encryptedKey) {
+    public EncryptionInputStream(InputStream originalStream, String encodeSpec, Cipher cipher, String encryptedKey) {
         super(originalStream);
         metadata = new EncryptionMetadata(encodeSpec);
         metadata.setEncryptedKey(encryptedKey);
         metadata.setInitVector(cipher.getIV());
 
-        // Create the stream chain:
-        // CountingOutputStream->DigestOutputStream->CipherOutputStream->[user stream].
+        // Construct the filter chain:
+        // [user stream]->CountingInputStream->DigestInputStream->CipherInputStream
         try {
-            CipherOutputStream cipherStream = new CipherOutputStream(originalStream, cipher);
-            digestStream = new DigestOutputStream(cipherStream, MessageDigest.getInstance("SHA1"));
-            counterStream = new CountingOutputStream(digestStream);
-            out = counterStream;
+            counterStream = new CountingInputStream(originalStream);
+            digestStream = new DigestInputStream(counterStream, MessageDigest.getInstance("SHA1"));
+            in = new CipherInputStream(digestStream, cipher);
         } catch (NoSuchAlgorithmException e) {
             throw new EncryptionException("Unable to initialize digest", e);
         }
@@ -65,7 +64,7 @@ public class EncryptionOutputStream extends EncodeOutputStream<EncryptionMetadat
 
     @Override
     public void close() throws IOException {
-        if(closed) return;
+        if (closed) return;
         closed = true;
 
         super.close();

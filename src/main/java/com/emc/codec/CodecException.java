@@ -26,22 +26,18 @@
  *
  */
 
-package com.emc.codec.encryption;
+package com.emc.codec;
 
-/**
- * This exception is thrown from the rekey() method when the object is already using the
- * latest master key and does not need to be rekeyed.
- */
-public class DoesNotNeedRekeyException extends EncryptionException {
-    public DoesNotNeedRekeyException(String message) {
-        super(message);
+public class CodecException extends RuntimeException {
+    public CodecException(String s) {
+        super(s);
     }
 
-    public DoesNotNeedRekeyException(String message, Throwable cause) {
-        super(message, cause);
+    public CodecException(String s, Throwable throwable) {
+        super(s, throwable);
     }
 
-    public DoesNotNeedRekeyException(Throwable cause) {
-        super(cause);
+    public CodecException(Throwable throwable) {
+        super(throwable);
     }
 }

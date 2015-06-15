@@ -26,22 +26,42 @@
  *
  */
 
-package com.emc.codec.encryption;
+package com.emc.codec;
 
-/**
- * This exception is thrown from the rekey() method when the object is already using the
- * latest master key and does not need to be rekeyed.
- */
-public class DoesNotNeedRekeyException extends EncryptionException {
-    public DoesNotNeedRekeyException(String message) {
-        super(message);
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Map;
+
+public abstract class AbstractCodec<M extends EncodeMetadata> implements Encoder<M>, Decoder<M>, Comparable<AbstractCodec<M>> {
+    @Override
+    public boolean canEncode(String encodeSpec) {
+        return canProcess(encodeSpec);
     }
 
-    public DoesNotNeedRekeyException(String message, Throwable cause) {
-        super(message, cause);
+    @Override
+    public boolean canDecode(String encodeSpec) {
+        return canProcess(encodeSpec);
     }
 
-    public DoesNotNeedRekeyException(Throwable cause) {
-        super(cause);
+    protected abstract boolean canProcess(String encodeSpec);
+
+    @Override
+    public long getEncodedSize(long originalSize, Map<String, Object> codecProperties) {
+        return getEncodedSize(originalSize, getDefaultEncodeSpec(), codecProperties);
+    }
+
+    @Override
+    public EncodeOutputStream<M> getEncodingStream(OutputStream originalStream, Map<String, Object> codecProperties) {
+        return getEncodingStream(originalStream, getDefaultEncodeSpec(), codecProperties);
+    }
+
+    @Override
+    public EncodeInputStream<M> getEncodingStream(InputStream originalStream, Map<String, Object> codecProperties) {
+        return getEncodingStream(originalStream, getDefaultEncodeSpec(), codecProperties);
+    }
+
+    @Override
+    public int compareTo(AbstractCodec<M> o) {
+        return getPriority() - o.getPriority();
     }
 }

@@ -26,22 +26,52 @@
  *
  */
 
-package com.emc.codec.encryption;
+package com.emc.codec;
 
-/**
- * This exception is thrown from the rekey() method when the object is already using the
- * latest master key and does not need to be rekeyed.
- */
-public class DoesNotNeedRekeyException extends EncryptionException {
-    public DoesNotNeedRekeyException(String message) {
-        super(message);
+import org.apache.log4j.Logger;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+public class TestUtil {
+    private static final Logger l4j = Logger.getLogger(TestUtil.class);
+
+    public static byte[] getOriginalData() throws IOException {
+        // Get some data to compress.
+        InputStream classin = getOriginalStream();
+        ByteArrayOutputStream classByteStream = new ByteArrayOutputStream();
+
+        copyStream(classin, classByteStream, true);
+
+        return classByteStream.toByteArray();
     }
 
-    public DoesNotNeedRekeyException(String message, Throwable cause) {
-        super(message, cause);
+    public static InputStream getOriginalStream() {
+        return TestUtil.class.getClassLoader().getResourceAsStream("uncompressed.txt");
     }
 
-    public DoesNotNeedRekeyException(Throwable cause) {
-        super(cause);
+    public static void copyStream(InputStream input, OutputStream output, boolean closeStreams) throws IOException {
+        byte[] buffer = new byte[4096];
+        int c;
+        try {
+            while ((c = input.read(buffer)) != -1) {
+                output.write(buffer, 0, c);
+            }
+        } finally {
+            if (closeStreams) {
+                try {
+                    input.close();
+                } catch (Throwable t) {
+                    l4j.warn("could not close input", t);
+                }
+                try {
+                    output.close();
+                } catch (Throwable t) {
+                    l4j.warn("could not close output", t);
+                }
+            }
+        }
     }
 }

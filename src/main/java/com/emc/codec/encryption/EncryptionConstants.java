@@ -28,20 +28,18 @@
 
 package com.emc.codec.encryption;
 
-/**
- * This exception is thrown from the rekey() method when the object is already using the
- * latest master key and does not need to be rekeyed.
- */
-public class DoesNotNeedRekeyException extends EncryptionException {
-    public DoesNotNeedRekeyException(String message) {
-        super(message);
-    }
+public class EncryptionConstants {
+    public static final String ENCRYPTION_TYPE = "ENC";
 
-    public DoesNotNeedRekeyException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    public static final String META_SIGNATURE_ALGORITHM = "SHA256withRSA";
+    public static final String KEY_ENCRYPTION_CIPHER = "RSA/ECB/OAEPWithSHA-1AndMGF1Padding";
 
-    public DoesNotNeedRekeyException(Throwable cause) {
-        super(cause);
-    }
+    public static final String META_ENCRYPTION_PREFIX = "x-emc-enc-";
+
+    public static final String META_ENCRYPTION_KEY_ID = META_ENCRYPTION_PREFIX + "key-id";
+    public static final String META_ENCRYPTION_OBJECT_KEY = META_ENCRYPTION_PREFIX + "object-key";
+    public static final String META_ENCRYPTION_IV = META_ENCRYPTION_PREFIX + "iv";
+    public static final String META_ENCRYPTION_UNENC_SIZE = META_ENCRYPTION_PREFIX + "unencrypted-size";
+    public static final String META_ENCRYPTION_UNENC_SHA1 = META_ENCRYPTION_PREFIX + "unencrypted-sha1";
+    public static final String META_ENCRYPTION_META_SIG = META_ENCRYPTION_PREFIX + "metadata-signature";
 }

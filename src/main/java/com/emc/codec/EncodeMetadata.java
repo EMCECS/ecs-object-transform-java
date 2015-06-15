@@ -26,22 +26,20 @@
  *
  */
 
-package com.emc.codec.encryption;
+package com.emc.codec;
 
-/**
- * This exception is thrown from the rekey() method when the object is already using the
- * latest master key and does not need to be rekeyed.
- */
-public class DoesNotNeedRekeyException extends EncryptionException {
-    public DoesNotNeedRekeyException(String message) {
-        super(message);
+import java.util.Map;
+
+public abstract class EncodeMetadata {
+    private String encodeSpec;
+
+    public EncodeMetadata(String encodeSpec) {
+        this.encodeSpec = encodeSpec;
     }
 
-    public DoesNotNeedRekeyException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    public abstract Map<String, String> toMap();
 
-    public DoesNotNeedRekeyException(Throwable cause) {
-        super(cause);
+    public String getEncodeSpec() {
+        return encodeSpec;
     }
 }

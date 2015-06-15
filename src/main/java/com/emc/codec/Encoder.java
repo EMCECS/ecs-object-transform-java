@@ -26,22 +26,38 @@
  *
  */
 
-package com.emc.codec.encryption;
+package com.emc.codec;
 
-/**
- * This exception is thrown from the rekey() method when the object is already using the
- * latest master key and does not need to be rekeyed.
- */
-public class DoesNotNeedRekeyException extends EncryptionException {
-    public DoesNotNeedRekeyException(String message) {
-        super(message);
-    }
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Map;
 
-    public DoesNotNeedRekeyException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public interface Encoder<M extends EncodeMetadata> {
+    boolean canEncode(String encodeSpec);
 
-    public DoesNotNeedRekeyException(Throwable cause) {
-        super(cause);
-    }
+    String getDefaultEncodeSpec();
+
+    int getPriority();
+
+    boolean isSizePredictable();
+
+    long getEncodedSize(long originalSize, Map<String, Object> codecProperties);
+
+    long getEncodedSize(long originalSize, String encodeSpec, Map<String, Object> codecProperties);
+
+    /**
+     * This version of the method should use {@link #getDefaultEncodeSpec()}
+     */
+    EncodeOutputStream<M> getEncodingStream(OutputStream originalStream, Map<String, Object> codecProperties);
+
+    /**
+     * This version of the method should use {@link #getDefaultEncodeSpec()}
+     */
+    EncodeInputStream<M> getEncodingStream(InputStream originalStream, Map<String, Object> codecProperties);
+
+    EncodeOutputStream<M> getEncodingStream(OutputStream originalStream, String encodeSpec,
+                                            Map<String, Object> codecProperties);
+
+    EncodeInputStream<M> getEncodingStream(InputStream originalStream, String encodeSpec,
+                                           Map<String, Object> codecProperties);
 }

@@ -26,60 +26,69 @@
  *
  */
 
-package com.emc.codec.encryption;
+package com.emc.codec.compression;
 
 import com.emc.codec.EncodeOutputStream;
 import com.emc.codec.util.CountingOutputStream;
 
-import javax.crypto.Cipher;
-import javax.crypto.CipherOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class EncryptionOutputStream extends EncodeOutputStream<EncryptionMetadata> {
-    private EncryptionMetadata metadata;
-    boolean closed = false;
-    private DigestOutputStream digestStream;
-    private CountingOutputStream counterStream;
+public abstract class CompressionOutputStream extends EncodeOutputStream<CompressionMetadata> {
+    private CompressionMetadata metadata;
+    private boolean closed = false;
+    private CountingOutputStream uncompressedCounter;
+    private CountingOutputStream compressedCounter;
+    private DigestOutputStream digester;
 
-    public EncryptionOutputStream(OutputStream originalStream, String encodeSpec, Cipher cipher, String encryptedKey) {
-        super(originalStream);
-        metadata = new EncryptionMetadata(encodeSpec);
-        metadata.setEncryptedKey(encryptedKey);
-        metadata.setInitVector(cipher.getIV());
+    /**
+     * Implementation constructors must call {@link #initStreams(OutputStream)}!!
+     */
+    public CompressionOutputStream(OutputStream output, String encodeSpec) {
+        super(output);
+        this.metadata = new CompressionMetadata(encodeSpec);
+    }
 
-        // Create the stream chain:
-        // CountingOutputStream->DigestOutputStream->CipherOutputStream->[user stream].
+    protected abstract OutputStream getCompressionStream(OutputStream output) throws IOException;
+
+    protected void initStreams(OutputStream originalStream) {
         try {
-            CipherOutputStream cipherStream = new CipherOutputStream(originalStream, cipher);
-            digestStream = new DigestOutputStream(cipherStream, MessageDigest.getInstance("SHA1"));
-            counterStream = new CountingOutputStream(digestStream);
-            out = counterStream;
+            // Create the stream chain:
+            // DigestOutputStream->CountingOutputStream->[compression output stream]->CountingOutputStream->[user stream]
+            compressedCounter = new CountingOutputStream(originalStream);
+            OutputStream compressionStream = getCompressionStream(compressedCounter);
+            uncompressedCounter = new CountingOutputStream(compressionStream);
+            digester = new DigestOutputStream(uncompressedCounter, MessageDigest.getInstance("SHA1"));
+            out = digester;
         } catch (NoSuchAlgorithmException e) {
-            throw new EncryptionException("Unable to initialize digest", e);
+            throw new CompressionException("Unable to initialize digest", e);
+        } catch (IOException e) {
+            throw new CompressionException("Could not create compression stream", e);
         }
     }
 
     @Override
     public void close() throws IOException {
-        if(closed) return;
+        if (closed) return;
         closed = true;
 
         super.close();
 
         // this should only be executed once
-        metadata.setOriginalSize(counterStream.getByteCount());
-        metadata.setOriginalDigest(digestStream.getMessageDigest().digest());
+        metadata.setOriginalSize(uncompressedCounter.getByteCount());
+        metadata.setCompressedSize(compressedCounter.getByteCount());
+        metadata.setOriginalDigest(digester.getMessageDigest().digest());
 
         notifyListeners();
     }
 
     @Override
-    public EncryptionMetadata getEncodeMetadata() {
-        if (!closed) throw new IllegalStateException("Cannot getEncodeMetadata until stream is closed");
+    public CompressionMetadata getEncodeMetadata() {
+        if (!closed) throw new IllegalStateException("Cannot call getEncodeMetadata until stream is closed");
+
         return metadata;
     }
 }

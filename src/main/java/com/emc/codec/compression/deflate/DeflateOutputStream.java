@@ -26,22 +26,26 @@
  *
  */
 
-package com.emc.codec.encryption;
+package com.emc.codec.compression.deflate;
 
-/**
- * This exception is thrown from the rekey() method when the object is already using the
- * latest master key and does not need to be rekeyed.
- */
-public class DoesNotNeedRekeyException extends EncryptionException {
-    public DoesNotNeedRekeyException(String message) {
-        super(message);
+import com.emc.codec.compression.CompressionOutputStream;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
+
+public class DeflateOutputStream extends CompressionOutputStream {
+    private int compressionLevel;
+
+    public DeflateOutputStream(OutputStream out, String encodeSpec, int compressionLevel) {
+        super(out, encodeSpec);
+        this.compressionLevel = compressionLevel;
+        initStreams(out);
     }
 
-    public DoesNotNeedRekeyException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public DoesNotNeedRekeyException(Throwable cause) {
-        super(cause);
+    @Override
+    protected OutputStream getCompressionStream(OutputStream output) throws IOException {
+        return new DeflaterOutputStream(output, new Deflater(compressionLevel));
     }
 }

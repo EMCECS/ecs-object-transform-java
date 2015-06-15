@@ -26,22 +26,50 @@
  *
  */
 
-package com.emc.codec.encryption;
+package com.emc.codec;
 
-/**
- * This exception is thrown from the rekey() method when the object is already using the
- * latest master key and does not need to be rekeyed.
- */
-public class DoesNotNeedRekeyException extends EncryptionException {
-    public DoesNotNeedRekeyException(String message) {
-        super(message);
+import java.io.FilterInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class EncodeInputStream<M extends EncodeMetadata> extends FilterInputStream
+        implements EncodeStream<M> {
+    List<EncodeListener<M>> listeners = new ArrayList<EncodeListener<M>>();
+    EncodeStream prevEncodeStream;
+    EncodeStream nextEncodeStream;
+
+    public EncodeInputStream(InputStream in) {
+        super(in);
+        if (in instanceof EncodeInputStream) {
+            prevEncodeStream = (EncodeStream) in;
+            ((EncodeInputStream) in).nextEncodeStream = this;
+        }
     }
 
-    public DoesNotNeedRekeyException(String message, Throwable cause) {
-        super(message, cause);
+    protected void notifyListeners() {
+        for (EncodeListener<M> listener : listeners) {
+            listener.encodeComplete(this);
+        }
     }
 
-    public DoesNotNeedRekeyException(Throwable cause) {
-        super(cause);
+    @Override
+    public void addListener(EncodeListener<M> listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(EncodeListener<M> listener) {
+        listeners.remove(listener);
+    }
+
+    @Override
+    public EncodeStream getChainHead() {
+        return prevEncodeStream == null ? this : prevEncodeStream.getChainHead();
+    }
+
+    @Override
+    public EncodeStream getNext() {
+        return nextEncodeStream;
     }
 }

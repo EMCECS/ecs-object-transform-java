@@ -3,7 +3,7 @@ description = 'EMC library for encoding/decoding object content (i.e. encrypting
 ext.githubProjectName = 'ecs-object-transform-java'
 
 buildscript {
-    ext.commonBuildVersion = '1.3'
+    ext.commonBuildVersion = '1.3.1'
     ext.commonBuildDir = "https://raw.githubusercontent.com/emcvipr/ecs-common-build/v$commonBuildVersion"
     apply from: "$commonBuildDir/ecs-publish.buildscript.gradle", to: buildscript
 }
@@ -12,19 +12,18 @@ apply from: "$commonBuildDir/ecs-publish.gradle"
 
 dependencies {
     compile 'org.b1.pack:lzma-sdk-4j:9.22.0',
-            'org.slf4j:slf4j-api:1.7.9',
+            'log4j:log4j:1.2.16',
             'commons-codec:commons-codec:1.10'
-    testCompile 'junit:junit:4.11',
-            'org.slf4j:slf4j-simple:1.7.9'
+    testCompile 'junit:junit:4.12'
 }
 
 cobertura {
-    coverageExcludes = ['com.emc.codec.encryption.DoesNotNeedRekeyException',
-                        'com.emc.codec.encryption.AESBench',
-                        'com.emc.codec.encryption.AESTest.*',
-                        'com.emc.codec.util.LzmaTest',
-                        'com.emc.codec.TransformConstants',
-                        'com.emc.codec.compression.CompressionStream',
-                        'com.emc.codec.util.CloseCallback']
+    coverageExcludes = ['.*com\\.emc\\.codec\\.CodecException.*',
+                        '.*com\\.emc\\.codec\\.compression\\.CompressionException.*',
+                        '.*com\\.emc\\.codec\\.compression\\.lzma\\.LzmaTest.*',
+                        '.*com\\.emc\\.codec\\.encryption\\.AESBench.*',
+                        '.*com\\.emc\\.codec\\.encryption\\.AESTest.*',
+                        '.*com\\.emc\\.codec\\.encryption\\.DoesNotNeedRekeyException.*',
+                        '.*com\\.emc\\.codec\\.encryption\\.EncryptionException.*']
 }
 

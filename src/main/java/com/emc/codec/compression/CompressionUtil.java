@@ -26,22 +26,29 @@
  *
  */
 
-package com.emc.codec.encryption;
+package com.emc.codec.compression;
 
-/**
- * This exception is thrown from the rekey() method when the object is already using the
- * latest master key and does not need to be rekeyed.
- */
-public class DoesNotNeedRekeyException extends EncryptionException {
-    public DoesNotNeedRekeyException(String message) {
-        super(message);
+import com.emc.codec.util.CodecUtil;
+
+public class CompressionUtil {
+    public static int getCompressionLevel(String encodeSpec, int defaultLevel) {
+        int level = defaultLevel;
+        String algorithm = CodecUtil.getEncodeAlgorithm(encodeSpec);
+
+        if (algorithm != null && algorithm.contains("/"))
+            level = Integer.parseInt(algorithm.substring(algorithm.indexOf("/") + 1));
+
+        validateCompressionLevel(level);
+        return level;
     }
 
-    public DoesNotNeedRekeyException(String message, Throwable cause) {
-        super(message, cause);
+    public static String getEncodeSpec(String algorithm, int compressionLevel) {
+        validateCompressionLevel(compressionLevel);
+        return CodecUtil.getEncodeSpec(CompressionConstants.COMPRESSION_TYPE, algorithm + "/" + compressionLevel);
     }
 
-    public DoesNotNeedRekeyException(Throwable cause) {
-        super(cause);
+    public static void validateCompressionLevel(int compressionLevel) {
+        if (compressionLevel > 9 || compressionLevel < 0)
+            throw new IllegalArgumentException("Invalid compression level: " + compressionLevel);
     }
 }

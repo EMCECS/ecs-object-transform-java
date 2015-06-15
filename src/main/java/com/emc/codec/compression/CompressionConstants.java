@@ -26,22 +26,17 @@
  *
  */
 
-package com.emc.codec.encryption;
+package com.emc.codec.compression;
 
-/**
- * This exception is thrown from the rekey() method when the object is already using the
- * latest master key and does not need to be rekeyed.
- */
-public class DoesNotNeedRekeyException extends EncryptionException {
-    public DoesNotNeedRekeyException(String message) {
-        super(message);
-    }
+public class CompressionConstants {
+    public static final String COMPRESSION_TYPE = "COMP";
 
-    public DoesNotNeedRekeyException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    public static final int DEFAULT_COMPRESSION_LEVEL = 5;
 
-    public DoesNotNeedRekeyException(Throwable cause) {
-        super(cause);
-    }
+    public static final String META_COMPRESSION_PREFIX = "x-emc-comp-";
+
+    public static final String META_COMPRESSION_UNCOMP_SIZE = META_COMPRESSION_PREFIX + "uncompressed-size";
+    public static final String META_COMPRESSION_COMP_SIZE = META_COMPRESSION_PREFIX + "compressed-size";
+    public static final String META_COMPRESSION_COMP_RATIO = META_COMPRESSION_PREFIX + "compression-ratio";
+    public static final String META_COMPRESSION_UNCOMP_SHA1 = META_COMPRESSION_PREFIX + "uncompressed-sha1";
 }

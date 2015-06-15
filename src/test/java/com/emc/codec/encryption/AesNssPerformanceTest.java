@@ -28,20 +28,20 @@
 
 package com.emc.codec.encryption;
 
-/**
- * This exception is thrown from the rekey() method when the object is already using the
- * latest master key and does not need to be rekeyed.
- */
-public class DoesNotNeedRekeyException extends EncryptionException {
-    public DoesNotNeedRekeyException(String message) {
-        super(message);
-    }
+import org.junit.Assume;
+import org.junit.BeforeClass;
 
-    public DoesNotNeedRekeyException(String message, Throwable cause) {
-        super(message, cause);
-    }
+import java.io.File;
+import java.security.Provider;
+import java.security.Security;
 
-    public DoesNotNeedRekeyException(Throwable cause) {
-        super(cause);
+public class AesNssPerformanceTest extends AesPerformanceTest {
+    @BeforeClass
+    public static void setup() throws Exception {
+        File pkcsConfig = new File(System.getProperty("user.home") + File.separator + "pkcs11.cfg");
+        Assume.assumeTrue(pkcsConfig.exists() && pkcsConfig.canRead());
+
+        Provider provider = new sun.security.pkcs11.SunPKCS11(pkcsConfig.getPath());
+        Security.insertProviderAt(provider, 1);
     }
 }
