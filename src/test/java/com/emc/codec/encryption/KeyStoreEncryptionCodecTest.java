@@ -41,6 +41,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.security.InvalidKeyException;
 import java.security.KeyStore;
 import java.security.Provider;
 import java.security.interfaces.RSAPublicKey;
@@ -211,7 +212,7 @@ public class KeyStoreEncryptionCodecTest {
         try {
             new KeystoreKeyProvider(keystore, keystorePassword.toCharArray(), "NoKey").withProvider(provider);
             fail("Should not init with invalid key alias");
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidKeyException e) {
             // OK
         }
     }

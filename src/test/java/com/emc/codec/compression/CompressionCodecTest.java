@@ -193,12 +193,8 @@ public class CompressionCodecTest {
         assertEquals("stream length incorrect after decompression", uncompressedData.length, c);
         assertArrayEquals("data incorrect after decompression", uncompressedData, uncompressedData2);
 
-        // Should be same as above.
-        assertEquals("Uncompressed digest incorrect", "027e997e6b1dfc97b93eb28dc9a6804096d85873",
-                metadata.get(CompressionConstants.META_COMPRESSION_UNCOMP_SHA1));
-        assertEquals("Compression ratio incorrect", "95.1%", metadata.get(CompressionConstants.META_COMPRESSION_COMP_RATIO));
-        assertEquals("Uncompressed size incorrect", 2516125, Long.parseLong(metadata.get(CompressionConstants.META_COMPRESSION_UNCOMP_SIZE)));
-        assertEquals("Compressed size incorrect", 124271, Long.parseLong(metadata.get(CompressionConstants.META_COMPRESSION_COMP_SIZE)));
+        // encode meta should be removed
+        assertEquals("Encode metadata still present, but should be removed", 2, metadata.size());
         assertEquals("name1 incorrect", "value1", metadata.get("name1"));
         assertEquals("name2 incorrect", "value2", metadata.get("name2"));
     }
