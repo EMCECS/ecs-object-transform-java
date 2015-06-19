@@ -1,0 +1,3 @@
+com.emc.codec.encryption.EncryptionCodec
+com.emc.codec.compression.deflate.DeflateCodec
+com.emc.codec.compression.lzma.LzmaCodec
