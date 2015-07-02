@@ -70,6 +70,8 @@ public abstract class CompressionOutputStream extends EncodeOutputStream<Compres
         }
     }
 
+
+
     @Override
     public void close() throws IOException {
         if (closed) return;

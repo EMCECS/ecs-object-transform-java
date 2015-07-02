@@ -29,6 +29,7 @@
 package com.emc.codec;
 
 import java.io.FilterOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,18 @@ public abstract class EncodeOutputStream<M extends EncodeMetadata> extends Filte
         for (EncodeListener<M> listener : listeners) {
             listener.encodeComplete(this);
         }
+    }
+
+    // Override because the default FilterOutputStream method does not delegate array writes.
+    @Override
+    public void write(byte[] b) throws IOException {
+        out.write(b);
+    }
+
+    // Override because the default FilterOutputStream method does not delegate array writes.
+    @Override
+    public void write(byte[] b, int off, int len) throws IOException {
+        out.write(b, off, len);
     }
 
     @Override
