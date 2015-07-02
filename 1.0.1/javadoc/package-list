@@ -1,0 +1,6 @@
+com.emc.codec
+com.emc.codec.compression
+com.emc.codec.compression.deflate
+com.emc.codec.compression.lzma
+com.emc.codec.encryption
+com.emc.codec.util
