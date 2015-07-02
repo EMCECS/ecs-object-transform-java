@@ -60,19 +60,19 @@ public class LzmaDecodeOutputStream extends FilterOutputStream {
     @Override
     public void write(int b) throws IOException {
         checkForError();
-        super.write(b);
+        out.write(b);
     }
 
     @Override
     public void write(byte[] b) throws IOException {
         checkForError();
-        super.write(b);
+        out.write(b);
     }
 
     @Override
     public void write(byte[] b, int off, int len) throws IOException {
         checkForError();
-        super.write(b, off, len);
+        out.write(b, off, len);
     }
 
     @Override

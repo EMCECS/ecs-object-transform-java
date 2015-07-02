@@ -207,6 +207,18 @@ public class CodecChain {
             this.metaMap = metaMap;
         }
 
+        // Override because FilterOutputStream does not do array writes.
+        @Override
+        public void write(byte[] b) throws IOException {
+            out.write(b);
+        }
+
+        // Override because FilterOutputStream does not do array writes.
+        @Override
+        public void write(byte[] b, int off, int len) throws IOException {
+            out.write(b, off, len);
+        }
+
         @Override
         public void close() throws IOException {
             super.close();
