@@ -42,7 +42,7 @@ public class KeystoreKeyProvider extends BasicKeyProvider {
 
     /**
      * Loads all key pairs from the specified key store and identifies the master key by the specified alias.
-     * <p/>
+     * <p>
      * This assumes that all keys share the same password.
      */
     public KeystoreKeyProvider(KeyStore keyStore, char[] keyStorePass, String masterKeyAlias)
