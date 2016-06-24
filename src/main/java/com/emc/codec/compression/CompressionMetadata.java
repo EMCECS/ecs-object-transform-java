@@ -78,10 +78,12 @@ public class CompressionMetadata extends EncodeMetadata {
     @Override
     public Map<String, String> toMap() {
         Map<String, String> metaMap = new HashMap<String, String>();
-        metaMap.put(CompressionConstants.META_COMPRESSION_UNCOMP_SIZE, "" + originalSize);
-        metaMap.put(CompressionConstants.META_COMPRESSION_COMP_SIZE, "" + compressedSize);
-        metaMap.put(CompressionConstants.META_COMPRESSION_COMP_RATIO, String.format("%.1f%%", compressionRatio));
-        metaMap.put(CompressionConstants.META_COMPRESSION_UNCOMP_SHA1, EncryptionUtil.toHexPadded(originalDigest));
+        if (isComplete()) {
+            metaMap.put(CompressionConstants.META_COMPRESSION_UNCOMP_SIZE, "" + originalSize);
+            metaMap.put(CompressionConstants.META_COMPRESSION_COMP_SIZE, "" + compressedSize);
+            metaMap.put(CompressionConstants.META_COMPRESSION_COMP_RATIO, String.format("%.1f%%", compressionRatio));
+            metaMap.put(CompressionConstants.META_COMPRESSION_UNCOMP_SHA1, EncryptionUtil.toHexPadded(originalDigest));
+        }
         return metaMap;
     }
 

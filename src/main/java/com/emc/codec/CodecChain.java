@@ -33,6 +33,7 @@ import java.util.*;
 
 public class CodecChain {
     public static final String META_TRANSFORM_MODE = "x-emc-transform-mode";
+    public static final String META_TRANSFORM_COMPLETE = "x-emc-transform-complete";
 
     // apparently ServiceLoader instances are not thread-safe and we don't want to synchronize on a static property or
     // load an instance each time a codec is constructed (potentially in every read request from the encryption client)
@@ -205,6 +206,7 @@ public class CodecChain {
             super(firstOutputStream);
             this.firstOutputStream = firstOutputStream;
             this.metaMap = metaMap;
+            addEncodeMetadata(metaMap, firstOutputStream, true);
         }
 
         // Override because FilterOutputStream does not do array writes.
@@ -222,7 +224,7 @@ public class CodecChain {
         @Override
         public void close() throws IOException {
             super.close();
-            addEncodeMetadata(metaMap, firstOutputStream);
+            addEncodeMetadata(metaMap, firstOutputStream, false);
         }
     }
 
@@ -237,25 +239,30 @@ public class CodecChain {
             super(lastInputStream);
             this.lastInputStream = lastInputStream;
             this.metaMap = metaMap;
+            addEncodeMetadata(metaMap, lastInputStream, true);
         }
 
         @Override
         public void close() throws IOException {
             super.close();
-            addEncodeMetadata(metaMap, lastInputStream);
+            addEncodeMetadata(metaMap, lastInputStream, false);
         }
     }
 
-    protected void addEncodeMetadata(Map<String, String> metaMap, EncodeStream encodeStream) {
+    protected void addEncodeMetadata(Map<String, String> metaMap, EncodeStream encodeStream, boolean addEncodeSpec) {
 
         // add all encode metadata to the meta map
+        boolean complete = true;
         encodeStream = encodeStream.getChainHead(); // make sure we start at the head of the chain
         do {
             EncodeMetadata metadata = encodeStream.getEncodeMetadata();
+            if (!metadata.isComplete()) complete = false;
             metaMap.putAll(metadata.toMap());
-            addEncodeSpec(metaMap, metadata.getEncodeSpec());
+            if (addEncodeSpec) addEncodeSpec(metaMap, metadata.getEncodeSpec());
             encodeStream = encodeStream.getNext();
         } while (encodeStream != null);
+
+        metaMap.put(META_TRANSFORM_COMPLETE, "" + complete); // this flag indicates whether the transform is complete
     }
 
     public void removeEncodeMetadata(Map<String, String> metaMap, List<EncodeMetadata> encodeMetaList) {
@@ -265,6 +272,7 @@ public class CodecChain {
             EncodeMetadata metadata = encodeMetaList.get(i);
             removeEncodeSpec(metaMap, metadata.getEncodeSpec()); // remove spec from end of chain
             metaMap.keySet().removeAll(metadata.toMap().keySet()); // remove encode metadata
+            metaMap.remove(META_TRANSFORM_COMPLETE); // remove completion flag
         }
     }
 
