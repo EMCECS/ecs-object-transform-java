@@ -71,6 +71,11 @@ public class CompressionMetadata extends EncodeMetadata {
     }
 
     @Override
+    public boolean isComplete() {
+        return originalDigest != null;
+    }
+
+    @Override
     public Map<String, String> toMap() {
         Map<String, String> metaMap = new HashMap<String, String>();
         metaMap.put(CompressionConstants.META_COMPRESSION_UNCOMP_SIZE, "" + originalSize);

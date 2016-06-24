@@ -29,6 +29,7 @@
 package com.emc.codec.encryption;
 
 import com.emc.codec.CodecChain;
+import com.emc.codec.EncodeMetadata;
 import com.emc.codec.EncodeOutputStream;
 import org.apache.log4j.LogMF;
 import org.apache.log4j.Logger;
@@ -239,13 +240,8 @@ public class KeyStoreEncryptionCodecTest {
         EncodeOutputStream<EncryptionMetadata> encryptedStream = codec.getEncodingStream(out, encodeSpec, codecProperties);
         encryptedStream.write(uncompressedData);
 
-        // Should not allow this yet.
-        try {
-            encryptedStream.getEncodeMetadata();
-            fail("Should not be able to get encoded metadata until stream is closed");
-        } catch (IllegalStateException e) {
-            // OK.
-        }
+        EncodeMetadata encMeta = encryptedStream.getEncodeMetadata();
+        assertFalse("encode metadata should not be complete", encMeta.isComplete());
 
         encryptedStream.close();
 

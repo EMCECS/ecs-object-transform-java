@@ -79,7 +79,6 @@ public class EncryptionOutputStream extends EncodeOutputStream<EncryptionMetadat
 
     @Override
     public EncryptionMetadata getEncodeMetadata() {
-        if (!closed) throw new IllegalStateException("Cannot getEncodeMetadata until stream is closed");
         return metadata;
     }
 }

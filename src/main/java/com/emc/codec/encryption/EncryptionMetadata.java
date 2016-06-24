@@ -75,6 +75,15 @@ public class EncryptionMetadata extends EncodeMetadata {
     }
 
     @Override
+    public boolean isComplete() {
+        return originalDigest != null
+                && masterKeyFingerprint != null
+                && encryptedKey != null
+                && initVector != null
+                && signature != null;
+    }
+
+    @Override
     public Map<String, String> toMap() {
         Map<String, String> metaMap = new HashMap<String, String>();
         metaMap.put(EncryptionConstants.META_ENCRYPTION_IV, EncryptionUtil.urlSafeEncodeBase64(initVector));
