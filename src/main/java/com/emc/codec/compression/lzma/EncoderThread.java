@@ -29,12 +29,15 @@
 package com.emc.codec.compression.lzma;
 
 import SevenZip.Compression.LZMA.Encoder;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
 public class EncoderThread extends Thread {
-    private static final Logger log = Logger.getLogger(EncoderThread.class);
+
+    private static final Logger log = LoggerFactory.getLogger(EncoderThread.class);
 
     public static final ThreadGroup THREAD_GROUP = new ThreadGroup("LZMA-Compress");
 
@@ -71,12 +74,17 @@ public class EncoderThread extends Thread {
             log.error("error during compression", t);
             error = t;
             errorSet = true;
-        } finally {
-            try { // make sure we close any piped streams to prevent deadlock
+        } finally { // make sure we close any piped streams to prevent deadlock
+            try {
                 if (input instanceof PipedInputStream) input.close();
+            } catch (Throwable t) {
+                log.warn("could not close input stream", t);
+            }
+
+            try {
                 if (output instanceof PipedOutputStream) output.close();
             } catch (Throwable t) {
-                log.warn("could not close pipe stream", t);
+                log.warn("could not close output stream", t);
             }
         }
     }

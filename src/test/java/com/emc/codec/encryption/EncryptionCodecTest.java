@@ -32,11 +32,12 @@ import com.emc.codec.CodecChain;
 import com.emc.codec.EncodeInputStream;
 import com.emc.codec.EncodeMetadata;
 import com.emc.codec.EncodeOutputStream;
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
 import java.io.ByteArrayInputStream;
@@ -54,7 +55,8 @@ import java.util.Properties;
 import static org.junit.Assert.*;
 
 public class EncryptionCodecTest {
-    private static final Logger logger = Logger.getLogger(EncryptionCodecTest.class);
+
+    private static final Logger logger = LoggerFactory.getLogger(EncryptionCodecTest.class);
 
     private Properties keyprops;
     private KeyPair masterKey;

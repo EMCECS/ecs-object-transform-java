@@ -12,8 +12,9 @@ apply from: "$commonBuildDir/ecs-publish.gradle"
 
 dependencies {
     compile 'org.b1.pack:lzma-sdk-4j:9.22.0',
-            'log4j:log4j:1.2.16',
-            'commons-codec:commons-codec:1.10'
+            'commons-codec:commons-codec:1.10',
+            'org.slf4j:slf4j-api:1.7.5'
+    runtime 'org.slf4j:slf4j-log4j12:1.7.5'
     testCompile 'junit:junit:4.12'
 }
 

@@ -31,17 +31,19 @@ package com.emc.codec.encryption;
 import java.lang.reflect.Method;
 import java.security.Provider;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Tests using the RSA BSAFE Crypto-J JCE encryption provider in FIPS 140-2 mode.
  */
 public class Fips140BasicEncryptionTest extends EncryptionCodecTest {
-    private static final Logger logger = Logger.getLogger(Fips140BasicEncryptionTest.class);
+
+    private static final Logger logger = LoggerFactory.getLogger(Fips140BasicEncryptionTest.class);
 
     @Before
     public void setUp() throws Exception {

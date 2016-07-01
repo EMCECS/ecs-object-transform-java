@@ -28,10 +28,11 @@
 
 package com.emc.codec.encryption;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -43,7 +44,8 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class KeyUtilsTest {
-    private static final Logger logger = Logger.getLogger(KeyUtilsTest.class);
+
+    private static final Logger logger = LoggerFactory.getLogger(KeyUtilsTest.class);
 
     private KeyPair masterKey;
     protected Provider provider;

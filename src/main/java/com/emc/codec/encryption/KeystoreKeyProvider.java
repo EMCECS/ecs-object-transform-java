@@ -28,14 +28,15 @@
 
 package com.emc.codec.encryption;
 
-import org.apache.log4j.LogMF;
-import org.apache.log4j.Logger;
-
 import java.security.*;
 import java.util.Enumeration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class KeystoreKeyProvider extends BasicKeyProvider {
-    private static final Logger l4j = Logger.getLogger(KeystoreKeyProvider.class);
+
+    private static final Logger l4j = LoggerFactory.getLogger(KeystoreKeyProvider.class);
 
     private KeyStore keyStore;
     private char[] keyStorePass;
@@ -56,7 +57,7 @@ public class KeystoreKeyProvider extends BasicKeyProvider {
             try {
                 addKey(getKeyFromAlias(alias));
             } catch (GeneralSecurityException e) {
-                LogMF.warn(l4j, e, "cannot retrieve key {0}", new Object[]{alias});
+                l4j.warn("cannot retrieve key " + alias, e);
             }
         }
 

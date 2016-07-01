@@ -31,11 +31,11 @@ package com.emc.codec.encryption;
 import com.emc.codec.CodecChain;
 import com.emc.codec.EncodeMetadata;
 import com.emc.codec.EncodeOutputStream;
-import org.apache.log4j.LogMF;
-import org.apache.log4j.Logger;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
 import java.io.ByteArrayInputStream;
@@ -54,7 +54,8 @@ import static org.junit.Assert.*;
 
 
 public class KeyStoreEncryptionCodecTest {
-    private static final Logger logger = Logger.getLogger(
+
+    private static final Logger logger = LoggerFactory.getLogger(
             KeyStoreEncryptionCodecTest.class);
     
     private KeyStore keystore;
@@ -80,7 +81,7 @@ public class KeyStoreEncryptionCodecTest {
             String alias = aliases.nextElement();
             RSAPublicKey publicKey = (RSAPublicKey) keystore.getCertificate(alias).getPublicKey();
             String fingerprint = EncryptionUtil.getRsaPublicKeyFingerprint(publicKey);
-            LogMF.debug(logger, "Found key: {0} (fp: {1})", alias, fingerprint);
+            logger.debug("Found key: {} (fp: {})", alias, fingerprint);
         }
 
         keyProvider = new KeystoreKeyProvider(keystore, keystorePassword.toCharArray(), keyAlias);

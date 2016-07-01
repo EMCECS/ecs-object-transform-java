@@ -28,15 +28,17 @@
 
 package com.emc.codec;
 
-import org.apache.log4j.Logger;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class TestUtil {
-    private static final Logger l4j = Logger.getLogger(TestUtil.class);
+
+    private static final Logger l4j = LoggerFactory.getLogger(TestUtil.class);
 
     public static byte[] getOriginalData() throws IOException {
         // Get some data to compress.

@@ -30,10 +30,9 @@ package com.emc.codec.encryption;
 
 import com.emc.codec.util.CodecUtil;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.log4j.LogMF;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -52,7 +51,8 @@ import java.util.*;
  *
  */
 public class EncryptionUtil {
-    private static final Logger logger = Logger.getLogger(EncryptionUtil.class);
+
+    private static final Logger logger = LoggerFactory.getLogger(EncryptionUtil.class);
     
     /**
      * Computes the fingerprint of an RSA public key.  This should be equivalent to the
@@ -288,7 +288,7 @@ public class EncryptionUtil {
             canonicalString.append(key.toLowerCase()).append(":").append(metadata.get(key)).append("\n");
         }
 
-        LogMF.debug(logger, "Canonical string: ''{0}''", canonicalString);
+        logger.debug("Canonical string: ''{}''", canonicalString);
         byte[] bytes;
         try {
             bytes = canonicalString.toString().getBytes("UTF-8");
