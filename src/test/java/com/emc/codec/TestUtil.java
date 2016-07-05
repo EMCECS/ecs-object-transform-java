@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, EMC Corporation.
+ * Copyright (c) 2015-2016, EMC Corporation.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 
 public class TestUtil {
 
-    private static final Logger l4j = LoggerFactory.getLogger(TestUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestUtil.class);
 
     public static byte[] getOriginalData() throws IOException {
         // Get some data to compress.
@@ -66,12 +66,12 @@ public class TestUtil {
                 try {
                     input.close();
                 } catch (Throwable t) {
-                    l4j.warn("could not close input", t);
+                    LOGGER.warn("could not close input", t);
                 }
                 try {
                     output.close();
                 } catch (Throwable t) {
-                    l4j.warn("could not close output", t);
+                    LOGGER.warn("could not close output", t);
                 }
             }
         }

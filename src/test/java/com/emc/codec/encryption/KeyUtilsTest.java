@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, EMC Corporation.
+ * Copyright (c) 2015-2016, EMC Corporation.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -45,7 +45,7 @@ import static org.junit.Assert.assertEquals;
 
 public class KeyUtilsTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(KeyUtilsTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(KeyUtilsTest.class);
 
     private KeyPair masterKey;
     protected Provider provider;
@@ -96,7 +96,7 @@ public class KeyUtilsTest {
         }
         kg.init(128);
         SecretKey sk = kg.generateKey();
-        logger.info("AES Key: " + EncryptionUtil.toHexPadded(sk.getEncoded()));
+        LOGGER.info("AES Key: " + EncryptionUtil.toHexPadded(sk.getEncoded()));
 
         String encryptedKey = EncryptionUtil.encryptKey(sk, provider, masterKey.getPublic());
 

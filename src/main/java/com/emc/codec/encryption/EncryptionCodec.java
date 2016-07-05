@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, EMC Corporation.
+ * Copyright (c) 2015-2016, EMC Corporation.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -45,7 +45,7 @@ import java.util.Map;
 
 public class EncryptionCodec extends AbstractCodec<EncryptionMetadata> {
 
-    private static final Logger log = LoggerFactory.getLogger(EncryptionCodec.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EncryptionCodec.class);
 
     public static final int PRIORITY = 1000;
 
@@ -96,7 +96,7 @@ public class EncryptionCodec extends AbstractCodec<EncryptionMetadata> {
             Cipher.getInstance(cipherSpec);
             return true;
         } catch (Exception e) {
-            log.warn("cannot process cipher " + cipherSpec, e);
+            LOGGER.warn("cannot process cipher " + cipherSpec, e);
         }
 
         return false;

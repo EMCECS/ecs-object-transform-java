@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, EMC Corporation.
+ * Copyright (c) 2015-2016, EMC Corporation.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 
 public class BasicKeyProvider implements KeyProvider {
 
-    private static final Logger log = LoggerFactory.getLogger(BasicKeyProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BasicKeyProvider.class);
 
     private KeyPair masterKey;
     private String masterKeyFingerprint;
@@ -78,7 +78,7 @@ public class BasicKeyProvider implements KeyProvider {
         if (keySize < 1024) {
             throw new IllegalArgumentException("The minimum RSA key size supported is 1024 bits. Your key is " + keySize + " bits");
         } else if (keySize == 1024) {
-            log.warn("1024-bit RSA key detected. Support for 1024-bit RSA keys may soon be removed from the JDK. Please upgrade to a stronger key (e.g. 2048-bit).");
+            LOGGER.warn("1024-bit RSA key detected. Support for 1024-bit RSA keys may soon be removed from the JDK. Please upgrade to a stronger key (e.g. 2048-bit).");
         }
     }
 

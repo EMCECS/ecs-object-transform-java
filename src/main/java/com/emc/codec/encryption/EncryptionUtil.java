@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, EMC Corporation.
+ * Copyright (c) 2015-2016, EMC Corporation.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -52,8 +52,8 @@ import java.util.*;
  */
 public class EncryptionUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(EncryptionUtil.class);
-    
+    private static final Logger LOGGER = LoggerFactory.getLogger(EncryptionUtil.class);
+
     /**
      * Computes the fingerprint of an RSA public key.  This should be equivalent to the
      * Subject Key Identifier (SKI) of a key pair stored in an X.509 certificate.  This
@@ -288,7 +288,7 @@ public class EncryptionUtil {
             canonicalString.append(key.toLowerCase()).append(":").append(metadata.get(key)).append("\n");
         }
 
-        logger.debug("Canonical string: ''{}''", canonicalString);
+        LOGGER.debug("Canonical string: ''{}''", canonicalString);
         byte[] bytes;
         try {
             bytes = canonicalString.toString().getBytes("UTF-8");

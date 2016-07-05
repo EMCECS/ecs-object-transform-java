@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, EMC Corporation.
+ * Copyright (c) 2015-2016, EMC Corporation.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 
 public class KeystoreKeyProvider extends BasicKeyProvider {
 
-    private static final Logger l4j = LoggerFactory.getLogger(KeystoreKeyProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(KeystoreKeyProvider.class);
 
     private KeyStore keyStore;
     private char[] keyStorePass;
@@ -57,7 +57,7 @@ public class KeystoreKeyProvider extends BasicKeyProvider {
             try {
                 addKey(getKeyFromAlias(alias));
             } catch (GeneralSecurityException e) {
-                l4j.warn("cannot retrieve key " + alias, e);
+                LOGGER.warn("cannot retrieve key " + alias, e);
             }
         }
 

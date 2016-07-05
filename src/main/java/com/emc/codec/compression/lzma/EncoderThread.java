@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, EMC Corporation.
+ * Copyright (c) 2015-2016, EMC Corporation.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -37,7 +37,7 @@ import java.io.*;
 
 public class EncoderThread extends Thread {
 
-    private static final Logger log = LoggerFactory.getLogger(EncoderThread.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EncoderThread.class);
 
     public static final ThreadGroup THREAD_GROUP = new ThreadGroup("LZMA-Compress");
 
@@ -71,20 +71,20 @@ public class EncoderThread extends Thread {
         try {
             encoder.Code(input, output, -1, -1, null);
         } catch (Throwable t) {
-            log.error("error during compression", t);
+            LOGGER.error("error during compression", t);
             error = t;
             errorSet = true;
         } finally { // make sure we close any piped streams to prevent deadlock
             try {
                 if (input instanceof PipedInputStream) input.close();
             } catch (Throwable t) {
-                log.warn("could not close input stream", t);
+                LOGGER.warn("could not close input stream", t);
             }
 
             try {
                 if (output instanceof PipedOutputStream) output.close();
             } catch (Throwable t) {
-                log.warn("could not close output stream", t);
+                LOGGER.warn("could not close output stream", t);
             }
         }
     }

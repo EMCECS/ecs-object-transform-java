@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, EMC Corporation.
+ * Copyright (c) 2015-2016, EMC Corporation.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -55,7 +55,7 @@ import static org.junit.Assert.*;
 
 public class KeyStoreEncryptionCodecTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(
+    private static final Logger LOGGER = LoggerFactory.getLogger(
             KeyStoreEncryptionCodecTest.class);
     
     private KeyStore keystore;
@@ -76,12 +76,12 @@ public class KeyStoreEncryptionCodecTest {
             throw new FileNotFoundException(keystoreFile);
         }
         keystore.load(in, keystorePassword.toCharArray());
-        logger.debug("Keystore Loaded");
+        LOGGER.debug("Keystore Loaded");
         for(Enumeration<String> aliases = keystore.aliases(); aliases.hasMoreElements();) {
             String alias = aliases.nextElement();
             RSAPublicKey publicKey = (RSAPublicKey) keystore.getCertificate(alias).getPublicKey();
             String fingerprint = EncryptionUtil.getRsaPublicKeyFingerprint(publicKey);
-            logger.debug("Found key: {} (fp: {})", alias, fingerprint);
+            LOGGER.debug("Found key: {} (fp: {})", alias, fingerprint);
         }
 
         keyProvider = new KeystoreKeyProvider(keystore, keystorePassword.toCharArray(), keyAlias);
@@ -263,7 +263,7 @@ public class KeyStoreEncryptionCodecTest {
         String transformConfig = encryptedStream.getEncodeMetadata().getEncodeSpec();
         assertEquals("Transform config string incorrect", "ENC:AES/CBC/PKCS5Padding", transformConfig);
 
-        logger.info("Encoded metadata: " + metadata);
+        LOGGER.info("Encoded metadata: " + metadata);
     }
 
     @Test
