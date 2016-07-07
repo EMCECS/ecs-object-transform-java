@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 
 public class DecoderThread extends Thread {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DecoderThread.class);
+    private static final Logger log = LoggerFactory.getLogger(DecoderThread.class);
 
     public static final ThreadGroup THREAD_GROUP = new ThreadGroup("LZMA-Decompress");
 
@@ -71,20 +71,20 @@ public class DecoderThread extends Thread {
 
             decoder.Code(input, output, -1);
         } catch (Throwable t) {
-            LOGGER.error("error during decompression", t);
+            log.error("error during decompression", t);
             error = t;
             errorSet = true;
         } finally { // make sure we close any piped streams to prevent deadlock
             try {
                 if (input instanceof PipedInputStream) input.close();
             } catch (Throwable t) {
-                LOGGER.warn("could not close input stream", t);
+                log.warn("could not close input stream", t);
             }
 
             try {
                 if (output instanceof PipedOutputStream) output.close();
             } catch (Throwable t) {
-                LOGGER.warn("could not close output stream", t);
+                log.warn("could not close output stream", t);
             }
         }
     }

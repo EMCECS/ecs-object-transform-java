@@ -56,7 +56,7 @@ import static org.junit.Assert.*;
 
 public class EncryptionCodecTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EncryptionCodecTest.class);
+    private static final Logger log = LoggerFactory.getLogger(EncryptionCodecTest.class);
 
     private Properties keyprops;
     private KeyPair masterKey;
@@ -92,7 +92,7 @@ public class EncryptionCodecTest {
                     keyprops.getProperty("smallkey.private"));
         } catch (Exception e) {
             // Good!
-            LOGGER.info("Key was properly rejected by JVM: " + e);
+            log.info("Key was properly rejected by JVM: " + e);
             return;
         }
 
@@ -100,7 +100,7 @@ public class EncryptionCodecTest {
             keyProvider.setMasterKey(smallKey);
         } catch (Exception e) {
             // Good!
-            LOGGER.info("Key was properly rejected by factory: " + e);
+            log.info("Key was properly rejected by factory: " + e);
             return;
         }
 
@@ -175,7 +175,7 @@ public class EncryptionCodecTest {
         String transformConfig = encryptedStream.getEncodeMetadata().getEncodeSpec();
         assertEquals("Transform config string incorrect", "ENC:AES/CBC/PKCS5Padding", transformConfig);
 
-        LOGGER.info("Encoded metadata: " + metadata);
+        log.info("Encoded metadata: " + metadata);
 
     }
     
@@ -230,7 +230,7 @@ public class EncryptionCodecTest {
         String transformConfig = encStream.getEncodeMetadata().getEncodeSpec();
         assertEquals("Transform config string incorrect", "ENC:AES/CBC/PKCS5Padding", transformConfig);
 
-        LOGGER.info("Encoded metadata: " + metadata);
+        log.info("Encoded metadata: " + metadata);
     }
 
     @Test
@@ -291,7 +291,7 @@ public class EncryptionCodecTest {
             fail("DSA keys should not be allowed.");
         } catch (Exception e) {
             // Good!
-            LOGGER.info("DSA key was properly rejected by codec: " + e);
+            log.info("DSA key was properly rejected by codec: " + e);
         }
     }
 

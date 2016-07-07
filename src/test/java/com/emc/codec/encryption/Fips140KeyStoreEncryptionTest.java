@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 
 public class Fips140KeyStoreEncryptionTest extends KeyStoreEncryptionCodecTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Fips140BasicEncryptionTest.class);
+    private static final Logger log = LoggerFactory.getLogger(Fips140BasicEncryptionTest.class);
 
     @Before
     public void setUp() throws Exception {
@@ -53,9 +53,9 @@ public class Fips140KeyStoreEncryptionTest extends KeyStoreEncryptionCodecTest {
             provider = p;
             providerLoaded = true;
         } catch(ClassNotFoundException e) {
-            LOGGER.info("RSA Crypto-J JCE Provider not found: " + e);
+            log.info("RSA Crypto-J JCE Provider not found: " + e);
         } catch(NoClassDefFoundError e) {
-            LOGGER.info("RSA Crypto-J JCE Provider not found: " + e);
+            log.info("RSA Crypto-J JCE Provider not found: " + e);
         }
         
         Assume.assumeTrue("Crypto-J JCE provider not loaded", providerLoaded);

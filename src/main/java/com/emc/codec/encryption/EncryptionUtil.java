@@ -52,7 +52,7 @@ import java.util.*;
  */
 public class EncryptionUtil {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EncryptionUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(EncryptionUtil.class);
 
     /**
      * Computes the fingerprint of an RSA public key.  This should be equivalent to the
@@ -288,7 +288,7 @@ public class EncryptionUtil {
             canonicalString.append(key.toLowerCase()).append(":").append(metadata.get(key)).append("\n");
         }
 
-        LOGGER.debug("Canonical string: ''{}''", canonicalString);
+        log.debug("Canonical string: ''{}''", canonicalString);
         byte[] bytes;
         try {
             bytes = canonicalString.toString().getBytes("UTF-8");

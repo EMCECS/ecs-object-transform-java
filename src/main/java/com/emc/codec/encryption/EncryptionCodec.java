@@ -45,7 +45,7 @@ import java.util.Map;
 
 public class EncryptionCodec extends AbstractCodec<EncryptionMetadata> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EncryptionCodec.class);
+    private static final Logger log = LoggerFactory.getLogger(EncryptionCodec.class);
 
     public static final int PRIORITY = 1000;
 
@@ -96,7 +96,7 @@ public class EncryptionCodec extends AbstractCodec<EncryptionMetadata> {
             Cipher.getInstance(cipherSpec);
             return true;
         } catch (Exception e) {
-            LOGGER.warn("cannot process cipher " + cipherSpec, e);
+            log.warn("cannot process cipher " + cipherSpec, e);
         }
 
         return false;

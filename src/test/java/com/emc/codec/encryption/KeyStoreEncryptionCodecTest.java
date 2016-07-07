@@ -55,7 +55,7 @@ import static org.junit.Assert.*;
 
 public class KeyStoreEncryptionCodecTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(
+    private static final Logger log = LoggerFactory.getLogger(
             KeyStoreEncryptionCodecTest.class);
     
     private KeyStore keystore;
@@ -76,12 +76,12 @@ public class KeyStoreEncryptionCodecTest {
             throw new FileNotFoundException(keystoreFile);
         }
         keystore.load(in, keystorePassword.toCharArray());
-        LOGGER.debug("Keystore Loaded");
+        log.debug("Keystore Loaded");
         for(Enumeration<String> aliases = keystore.aliases(); aliases.hasMoreElements();) {
             String alias = aliases.nextElement();
             RSAPublicKey publicKey = (RSAPublicKey) keystore.getCertificate(alias).getPublicKey();
             String fingerprint = EncryptionUtil.getRsaPublicKeyFingerprint(publicKey);
-            LOGGER.debug("Found key: {} (fp: {})", alias, fingerprint);
+            log.debug("Found key: {} (fp: {})", alias, fingerprint);
         }
 
         keyProvider = new KeystoreKeyProvider(keystore, keystorePassword.toCharArray(), keyAlias);
@@ -263,7 +263,7 @@ public class KeyStoreEncryptionCodecTest {
         String transformConfig = encryptedStream.getEncodeMetadata().getEncodeSpec();
         assertEquals("Transform config string incorrect", "ENC:AES/CBC/PKCS5Padding", transformConfig);
 
-        LOGGER.info("Encoded metadata: " + metadata);
+        log.info("Encoded metadata: " + metadata);
     }
 
     @Test

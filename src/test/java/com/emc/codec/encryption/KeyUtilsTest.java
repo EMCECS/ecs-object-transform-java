@@ -45,7 +45,7 @@ import static org.junit.Assert.assertEquals;
 
 public class KeyUtilsTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(KeyUtilsTest.class);
+    private static final Logger log = LoggerFactory.getLogger(KeyUtilsTest.class);
 
     private KeyPair masterKey;
     protected Provider provider;
@@ -96,7 +96,7 @@ public class KeyUtilsTest {
         }
         kg.init(128);
         SecretKey sk = kg.generateKey();
-        LOGGER.info("AES Key: " + EncryptionUtil.toHexPadded(sk.getEncoded()));
+        log.info("AES Key: " + EncryptionUtil.toHexPadded(sk.getEncoded()));
 
         String encryptedKey = EncryptionUtil.encryptKey(sk, provider, masterKey.getPublic());
 

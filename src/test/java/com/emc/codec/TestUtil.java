@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 
 public class TestUtil {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TestUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(TestUtil.class);
 
     public static byte[] getOriginalData() throws IOException {
         // Get some data to compress.
@@ -66,12 +66,12 @@ public class TestUtil {
                 try {
                     input.close();
                 } catch (Throwable t) {
-                    LOGGER.warn("could not close input", t);
+                    log.warn("could not close input", t);
                 }
                 try {
                     output.close();
                 } catch (Throwable t) {
-                    LOGGER.warn("could not close output", t);
+                    log.warn("could not close output", t);
                 }
             }
         }

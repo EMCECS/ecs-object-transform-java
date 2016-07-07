@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 
 public class KeystoreKeyProvider extends BasicKeyProvider {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(KeystoreKeyProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(KeystoreKeyProvider.class);
 
     private KeyStore keyStore;
     private char[] keyStorePass;
@@ -57,7 +57,7 @@ public class KeystoreKeyProvider extends BasicKeyProvider {
             try {
                 addKey(getKeyFromAlias(alias));
             } catch (GeneralSecurityException e) {
-                LOGGER.warn("cannot retrieve key " + alias, e);
+                log.warn("cannot retrieve key " + alias, e);
             }
         }
 
