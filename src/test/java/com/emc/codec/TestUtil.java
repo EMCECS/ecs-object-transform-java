@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, EMC Corporation.
+ * Copyright (c) 2015-2016, EMC Corporation.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -28,15 +28,17 @@
 
 package com.emc.codec;
 
-import org.apache.log4j.Logger;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class TestUtil {
-    private static final Logger l4j = Logger.getLogger(TestUtil.class);
+
+    private static final Logger log = LoggerFactory.getLogger(TestUtil.class);
 
     public static byte[] getOriginalData() throws IOException {
         // Get some data to compress.
@@ -64,12 +66,12 @@ public class TestUtil {
                 try {
                     input.close();
                 } catch (Throwable t) {
-                    l4j.warn("could not close input", t);
+                    log.warn("could not close input", t);
                 }
                 try {
                     output.close();
                 } catch (Throwable t) {
-                    l4j.warn("could not close output", t);
+                    log.warn("could not close output", t);
                 }
             }
         }

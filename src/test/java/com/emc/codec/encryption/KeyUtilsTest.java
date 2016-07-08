@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, EMC Corporation.
+ * Copyright (c) 2015-2016, EMC Corporation.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -28,10 +28,11 @@
 
 package com.emc.codec.encryption;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -43,7 +44,8 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class KeyUtilsTest {
-    private static final Logger logger = Logger.getLogger(KeyUtilsTest.class);
+
+    private static final Logger log = LoggerFactory.getLogger(KeyUtilsTest.class);
 
     private KeyPair masterKey;
     protected Provider provider;
@@ -94,7 +96,7 @@ public class KeyUtilsTest {
         }
         kg.init(128);
         SecretKey sk = kg.generateKey();
-        logger.info("AES Key: " + EncryptionUtil.toHexPadded(sk.getEncoded()));
+        log.info("AES Key: " + EncryptionUtil.toHexPadded(sk.getEncoded()));
 
         String encryptedKey = EncryptionUtil.encryptKey(sk, provider, masterKey.getPublic());
 

@@ -28,6 +28,7 @@
 
 package com.emc.codec.compression;
 
+import com.emc.codec.EncodeMetadata;
 import com.emc.codec.compression.deflate.DeflateCodec;
 import com.emc.codec.compression.deflate.DeflateOutputStream;
 import org.junit.Before;
@@ -38,7 +39,7 @@ import java.io.InputStream;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertFalse;
 
 public class DeflateOutputStreamTest {
 
@@ -66,15 +67,10 @@ public class DeflateOutputStreamTest {
         ByteArrayOutputStream compressedData = new ByteArrayOutputStream();
         DeflateOutputStream out = new DeflateOutputStream(compressedData, DeflateCodec.encodeSpec(5), 5);
         out.write(data);
-        
-        // Should throw exception
-        try {
-            out.getEncodeMetadata();
-            fail("Should have thrown IllegalStateException that stream was not closed yet.");
-        } catch(IllegalStateException e) {
-            // ignore
-        }
-        
+
+        EncodeMetadata encMeta = out.getEncodeMetadata();
+        assertFalse("encode metadata should not be complete", encMeta.isComplete());
+
         out.close();
 
         Map<String, String> m = out.getEncodeMetadata().toMap();

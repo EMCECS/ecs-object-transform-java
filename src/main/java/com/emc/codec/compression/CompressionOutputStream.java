@@ -89,8 +89,6 @@ public abstract class CompressionOutputStream extends EncodeOutputStream<Compres
 
     @Override
     public CompressionMetadata getEncodeMetadata() {
-        if (!closed) throw new IllegalStateException("Cannot call getEncodeMetadata until stream is closed");
-
         return metadata;
     }
 }

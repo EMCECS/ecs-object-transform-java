@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, EMC Corporation.
+ * Copyright (c) 2015-2016, EMC Corporation.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -30,10 +30,9 @@ package com.emc.codec.encryption;
 
 import com.emc.codec.util.CodecUtil;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.log4j.LogMF;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -52,8 +51,9 @@ import java.util.*;
  *
  */
 public class EncryptionUtil {
-    private static final Logger logger = Logger.getLogger(EncryptionUtil.class);
-    
+
+    private static final Logger log = LoggerFactory.getLogger(EncryptionUtil.class);
+
     /**
      * Computes the fingerprint of an RSA public key.  This should be equivalent to the
      * Subject Key Identifier (SKI) of a key pair stored in an X.509 certificate.  This
@@ -288,7 +288,7 @@ public class EncryptionUtil {
             canonicalString.append(key.toLowerCase()).append(":").append(metadata.get(key)).append("\n");
         }
 
-        LogMF.debug(logger, "Canonical string: ''{0}''", canonicalString);
+        log.debug("Canonical string: ''{}''", canonicalString);
         byte[] bytes;
         try {
             bytes = canonicalString.toString().getBytes("UTF-8");

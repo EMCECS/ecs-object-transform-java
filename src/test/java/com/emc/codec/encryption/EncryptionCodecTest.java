@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, EMC Corporation.
+ * Copyright (c) 2015-2016, EMC Corporation.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -30,12 +30,14 @@ package com.emc.codec.encryption;
 
 import com.emc.codec.CodecChain;
 import com.emc.codec.EncodeInputStream;
+import com.emc.codec.EncodeMetadata;
 import com.emc.codec.EncodeOutputStream;
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
 import java.io.ByteArrayInputStream;
@@ -53,7 +55,8 @@ import java.util.Properties;
 import static org.junit.Assert.*;
 
 public class EncryptionCodecTest {
-    private static final Logger logger = Logger.getLogger(EncryptionCodecTest.class);
+
+    private static final Logger log = LoggerFactory.getLogger(EncryptionCodecTest.class);
 
     private Properties keyprops;
     private KeyPair masterKey;
@@ -89,7 +92,7 @@ public class EncryptionCodecTest {
                     keyprops.getProperty("smallkey.private"));
         } catch (Exception e) {
             // Good!
-            logger.info("Key was properly rejected by JVM: " + e);
+            log.info("Key was properly rejected by JVM: " + e);
             return;
         }
 
@@ -97,7 +100,7 @@ public class EncryptionCodecTest {
             keyProvider.setMasterKey(smallKey);
         } catch (Exception e) {
             // Good!
-            logger.info("Key was properly rejected by factory: " + e);
+            log.info("Key was properly rejected by factory: " + e);
             return;
         }
 
@@ -148,13 +151,8 @@ public class EncryptionCodecTest {
         EncodeOutputStream encryptedStream = codec.getEncodingStream(out, encodeSpec, codecProperties);
         encryptedStream.write(uncompressedData);
 
-        // Should not allow this yet.
-        try {
-            encryptedStream.getEncodeMetadata();
-            fail("Should not be able to get encode info until stream is closed");
-        } catch (IllegalStateException e) {
-            // OK.
-        }
+        EncodeMetadata encMeta = encryptedStream.getEncodeMetadata();
+        assertFalse("encode metadata should not be complete", encMeta.isComplete());
 
         encryptedStream.close();
 
@@ -177,7 +175,7 @@ public class EncryptionCodecTest {
         String transformConfig = encryptedStream.getEncodeMetadata().getEncodeSpec();
         assertEquals("Transform config string incorrect", "ENC:AES/CBC/PKCS5Padding", transformConfig);
 
-        logger.info("Encoded metadata: " + metadata);
+        log.info("Encoded metadata: " + metadata);
 
     }
     
@@ -209,13 +207,8 @@ public class EncryptionCodecTest {
             c = encStream.read(buffer);
         }
 
-        // Should not allow this yet.
-        try {
-            encStream.getEncodeMetadata();
-            fail("Should not be able to get encoded metadata until stream is closed");
-        } catch (IllegalStateException e) {
-            // OK.
-        }
+        EncodeMetadata encMeta = encStream.getEncodeMetadata();
+        assertFalse("encode metadata should not be complete", encMeta.isComplete());
 
         encStream.close();
 
@@ -237,7 +230,7 @@ public class EncryptionCodecTest {
         String transformConfig = encStream.getEncodeMetadata().getEncodeSpec();
         assertEquals("Transform config string incorrect", "ENC:AES/CBC/PKCS5Padding", transformConfig);
 
-        logger.info("Encoded metadata: " + metadata);
+        log.info("Encoded metadata: " + metadata);
     }
 
     @Test
@@ -298,7 +291,7 @@ public class EncryptionCodecTest {
             fail("DSA keys should not be allowed.");
         } catch (Exception e) {
             // Good!
-            logger.info("DSA key was properly rejected by codec: " + e);
+            log.info("DSA key was properly rejected by codec: " + e);
         }
     }
 

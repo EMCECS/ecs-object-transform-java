@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, EMC Corporation.
+ * Copyright (c) 2015-2016, EMC Corporation.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -31,15 +31,16 @@ package com.emc.codec.encryption;
 import java.lang.reflect.Method;
 import java.security.Provider;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Fips140KeyStoreEncryptionTest extends KeyStoreEncryptionCodecTest {
 
-    private static final Logger logger = Logger.getLogger(Fips140BasicEncryptionTest.class);
+    private static final Logger log = LoggerFactory.getLogger(Fips140BasicEncryptionTest.class);
 
     @Before
     public void setUp() throws Exception {
@@ -52,9 +53,9 @@ public class Fips140KeyStoreEncryptionTest extends KeyStoreEncryptionCodecTest {
             provider = p;
             providerLoaded = true;
         } catch(ClassNotFoundException e) {
-            logger.info("RSA Crypto-J JCE Provider not found: " + e);
+            log.info("RSA Crypto-J JCE Provider not found: " + e);
         } catch(NoClassDefFoundError e) {
-            logger.info("RSA Crypto-J JCE Provider not found: " + e);
+            log.info("RSA Crypto-J JCE Provider not found: " + e);
         }
         
         Assume.assumeTrue("Crypto-J JCE provider not loaded", providerLoaded);

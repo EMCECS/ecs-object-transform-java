@@ -37,6 +37,12 @@ public abstract class EncodeMetadata {
         this.encodeSpec = encodeSpec;
     }
 
+    /**
+     * Return true if all metadata fields are populated and finalized, signifying that it is ok to write the final
+     * metadata to the object.
+     */
+    public abstract boolean isComplete();
+
     public abstract Map<String, String> toMap();
 
     public String getEncodeSpec() {

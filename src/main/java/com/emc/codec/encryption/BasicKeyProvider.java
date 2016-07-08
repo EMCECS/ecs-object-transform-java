@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, EMC Corporation.
+ * Copyright (c) 2015-2016, EMC Corporation.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -28,16 +28,18 @@
 
 package com.emc.codec.encryption;
 
-import org.apache.log4j.Logger;
-
 import java.security.KeyPair;
 import java.security.Provider;
 import java.security.interfaces.RSAPublicKey;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class BasicKeyProvider implements KeyProvider {
-    private static final Logger log = Logger.getLogger(BasicKeyProvider.class);
+
+    private static final Logger log = LoggerFactory.getLogger(BasicKeyProvider.class);
 
     private KeyPair masterKey;
     private String masterKeyFingerprint;

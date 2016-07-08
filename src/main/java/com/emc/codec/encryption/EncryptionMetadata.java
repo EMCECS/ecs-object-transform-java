@@ -75,14 +75,25 @@ public class EncryptionMetadata extends EncodeMetadata {
     }
 
     @Override
+    public boolean isComplete() {
+        return originalDigest != null
+                && masterKeyFingerprint != null
+                && encryptedKey != null
+                && initVector != null
+                && signature != null;
+    }
+
+    @Override
     public Map<String, String> toMap() {
         Map<String, String> metaMap = new HashMap<String, String>();
         metaMap.put(EncryptionConstants.META_ENCRYPTION_IV, EncryptionUtil.urlSafeEncodeBase64(initVector));
-        metaMap.put(EncryptionConstants.META_ENCRYPTION_KEY_ID, masterKeyFingerprint);
         metaMap.put(EncryptionConstants.META_ENCRYPTION_OBJECT_KEY, encryptedKey);
-        metaMap.put(EncryptionConstants.META_ENCRYPTION_UNENC_SHA1, DatatypeConverter.printHexBinary(originalDigest).toLowerCase());
-        metaMap.put(EncryptionConstants.META_ENCRYPTION_UNENC_SIZE, "" + originalSize);
-        metaMap.put(EncryptionConstants.META_ENCRYPTION_META_SIG, signature);
+        if (isComplete()) {
+            metaMap.put(EncryptionConstants.META_ENCRYPTION_UNENC_SHA1, DatatypeConverter.printHexBinary(originalDigest).toLowerCase());
+            metaMap.put(EncryptionConstants.META_ENCRYPTION_UNENC_SIZE, "" + originalSize);
+            metaMap.put(EncryptionConstants.META_ENCRYPTION_KEY_ID, masterKeyFingerprint);
+            metaMap.put(EncryptionConstants.META_ENCRYPTION_META_SIG, signature);
+        }
         return metaMap;
     }
 

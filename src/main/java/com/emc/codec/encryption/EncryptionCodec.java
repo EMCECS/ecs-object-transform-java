@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, EMC Corporation.
+ * Copyright (c) 2015-2016, EMC Corporation.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -30,11 +30,13 @@ package com.emc.codec.encryption;
 
 import com.emc.codec.*;
 import com.emc.codec.util.CodecUtil;
-import org.apache.log4j.LogMF;
-import org.apache.log4j.Logger;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.*;
@@ -42,7 +44,8 @@ import java.security.interfaces.RSAPrivateKey;
 import java.util.Map;
 
 public class EncryptionCodec extends AbstractCodec<EncryptionMetadata> {
-    private static final Logger log = Logger.getLogger(EncryptionCodec.class);
+
+    private static final Logger log = LoggerFactory.getLogger(EncryptionCodec.class);
 
     public static final int PRIORITY = 1000;
 
@@ -93,7 +96,7 @@ public class EncryptionCodec extends AbstractCodec<EncryptionMetadata> {
             Cipher.getInstance(cipherSpec);
             return true;
         } catch (Exception e) {
-            LogMF.warn(log, "cannot process cipher %s: %s", cipherSpec, e);
+            log.warn("cannot process cipher " + cipherSpec, e);
         }
 
         return false;
