@@ -3,7 +3,7 @@ description = 'EMC library for encoding/decoding object content (i.e. encrypting
 ext.githubProjectName = 'ecs-object-transform-java'
 
 buildscript {
-    ext.commonBuildVersion = '1.4.1'
+    ext.commonBuildVersion = '1.5'
     ext.commonBuildDir = "https://raw.githubusercontent.com/emcvipr/ecs-common-build/v$commonBuildVersion"
     apply from: "$commonBuildDir/ecs-publish.buildscript.gradle", to: buildscript
 }
